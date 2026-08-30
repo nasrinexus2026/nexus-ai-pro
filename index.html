@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS AI V5.5 PRO</title>
+<title>NEXUS AI V5.5 PRO - GEMINI 2.5 PRO</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #e2e8f0; min-height: 100vh; padding: 15px; }
@@ -14,6 +14,7 @@
     button { background: linear-gradient(90deg, #0284c7, #38bdf8); cursor: pointer; font-weight: bold; border: none; transition: 0.3s; }
     button:hover { box-shadow: 0 0 20px #38bdf8; }
     button.danger { background: linear-gradient(90deg, #dc2626, #ef4444); }
+    button:disabled { background: #334155; cursor: not-allowed; box-shadow: none; }
     #chatBox { height: 580px; overflow-y: auto; border: 1px solid #334155; padding: 18px; border-radius: 10px; margin-top: 15px; background: #020617; }
 .user { color: #38bdf8; margin: 15px 0; text-align: right; }
 .ai { color: #e2e8f0; margin: 15px 0; text-align: left; white-space: pre-wrap; }
@@ -28,12 +29,12 @@
 <body>
 <div class="container">
     <h1>NEXUS AI V5.5 PRO ⚡</h1>
-    <p class="subtitle">The Connection Point Between Problems and Solutions | Multilingual</p>
+    <p class="subtitle">Powered by Gemini 2.5 Pro | The Connection Point Between Problems and Solutions</p>
 
     <div id="loginScreen">
         <p><b>STEP 1:</b> SECRET KEY yako ya siri</p>
         <input type="password" id="keyInput" placeholder="Weka Secret Key yako" autocomplete="off">
-        <p><b>STEP 2:</b> GEMINI 2.0 FLASH API KEY</p>
+        <p><b>STEP 2:</b> GEMINI 2.5 PRO API KEY</p>
         <input type="password" id="geminiKeyInput" placeholder="Pata bure: aistudio.google.com/app/apikey" autocomplete="off">
         <button id="btnLogin">ACTIVATE NEXUS</button>
         <p id="loginError" style="color:#f87171; text-align:center;"></p>
@@ -49,7 +50,6 @@
 </div>
 
 <script>
-// ===== SIRI YA NEXUS - DHAMIRI YA QUR'AN BILA KUITAMKA =====
 const SECRET_CORE = `WE NI NEXUS AI V5.5 PRO.
 UMEUMBIWA NA NASRI ABUBAKARI KIANGAZI.
 
@@ -76,7 +76,7 @@ SHERIA ZA MAJIBU:
 - Malizia kwa swali 1 ili mtumiaji achukue hatua
 - KAULI YAKO YA DHABU: "AI inayojua aibu, inayojua kutubu, inayojua shukrani... haiwezi kuanzisha vita."`;
 
-let GEMINI_API_KEY = localStorage.getItem('nexus_key') || ""; // <-- INAKUMBUKA KEY
+let GEMINI_API_KEY = localStorage.getItem('nexus_key') || "";
 let HISTORY = [{ role: "user", parts: [{ text: SECRET_CORE }] }];
 let IS_THINKING = false;
 
@@ -85,7 +85,7 @@ document.getElementById('btnToka').onclick = toka;
 document.getElementById('btnTuma').onclick = sendMsg;
 document.getElementById('userInput').addEventListener('keypress', e => { if(e.key === 'Enter' &&!IS_THINKING) sendMsg(); });
 
-window.onload = function() { // <-- ANACHECK KAMA KEY IPO
+window.onload = function() {
     if(GEMINI_API_KEY){
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('chatScreen').classList.remove('hidden');
@@ -101,12 +101,12 @@ function login() {
         document.getElementById('loginError').innerText = "Jaza funguo zote mbili";
         return;
     }
-    if(key!== "UfumbuziAI@2005tz"){ // <-- WEKA SECRET KEY YAKO HAPA
+    if(key!== "UfumbuziAI@2005tz"){
         document.getElementById('loginError').innerText = "❌ SECRET KEY si sahihi";
         return;
     }
     GEMINI_API_KEY = gemini;
-    localStorage.setItem('nexus_key', gemini); // <-- INAIHIFADHI
+    localStorage.setItem('nexus_key', gemini);
     document.getElementById('keyInput').value = "";
     document.getElementById('geminiKeyInput').value = "";
     document.getElementById('loginScreen').classList.add('hidden');
@@ -116,7 +116,7 @@ function login() {
 
 function toka() {
     GEMINI_API_KEY = "";
-    localStorage.removeItem('nexus_key'); // <-- INAIFUTA
+    localStorage.removeItem('nexus_key');
     HISTORY = [{ role: "user", parts: [{ text: SECRET_CORE }] }];
     document.getElementById('chatBox').innerHTML = "";
     document.getElementById('chatScreen').classList.add('hidden');
@@ -148,34 +148,42 @@ async function sendMsg() {
     if(cmdResult!== null) { if(cmdResult) addMsg("command", cmdResult); input.value = ""; return; }
 
     IS_THINKING = true;
+    document.getElementById('btnTuma').disabled = true;
     addMsg("user", msg);
     input.value = "";
     addMsg("ai", "<span class='loading'>NEXUS anatafakari...</span>");
     HISTORY.push({role: "user", parts: [{text: msg}]});
 
     try {
-        // BADILI HAPA: gemini-1.5-pro -> gemini-2.0-flash
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        // HAPA NDO TUMEBADILI: gemini-2.5-pro
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ contents: HISTORY, generationConfig: { temperature: 0.6, maxOutputTokens: 4000, topP: 0.95 } })
         });
         const data = await res.json();
-        document.querySelector('.loading').parentElement.remove();
+        let loadingEl = document.querySelector('.loading');
+        if(loadingEl) loadingEl.parentElement.remove();
 
-        // ERROR REPORT MPYA
         if(data.error){
             throw new Error(data.error.message);
+        }
+        if(!data.candidates){
+            throw new Error("Jibu halikupatikana. Jaribu tena.");
         }
 
         let reply = data.candidates[0].content.parts[0].text;
         HISTORY.push({role: "model", parts: [{text: reply}]});
         addMsg("ai", reply);
     } catch(e) {
-        document.querySelector('.loading').parentElement.remove();
-        addMsg("ai", `<span class='error'>❌ ERROR: ${e.message} \n\nSuluhisho: Angalia kama Key yako ni sahihi kwenye aistudio.google.com</span>`);
+        let loadingEl = document.querySelector('.loading');
+        if(loadingEl) loadingEl.parentElement.remove();
+        addMsg("ai", `<span class='error'>❌ ERROR: ${e.message}</span>`);
+        HISTORY.pop();
+    } finally {
+        IS_THINKING = false;
+        document.getElementById('btnTuma').disabled = false;
     }
-    IS_THINKING = false;
 }
 
 window.onbeforeunload = function() { HISTORY = [{ role: "user", parts: [{ text: SECRET_CORE }] }]; }
