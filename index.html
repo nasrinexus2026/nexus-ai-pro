@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXUS AI V5.5 PRO - GEMINI 2.5 PRO</title>
+<title>NEXUS AI V5.8 - KANUNI 10</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', sans-serif; background: #020617; color: #e2e8f0; min-height: 100vh; padding: 15px; }
@@ -28,17 +28,17 @@
 </head>
 <body>
 <div class="container">
-    <h1>NEXUS AI V5.5 PRO ⚡</h1>
-    <p class="subtitle">Powered by Gemini 2.5 Pro | The Connection Point Between Problems and Solutions</p>
+    <h1>NEXUS AI V5.8 ⚡</h1>
+    <p class="subtitle">The Connection Point | Powered by Gemini 3.1 Pro | Kanuni 10 za Ufumbuzi</p>
 
     <div id="loginScreen">
         <p><b>STEP 1:</b> SECRET KEY yako ya siri</p>
         <input type="password" id="keyInput" placeholder="Weka Secret Key yako" autocomplete="off">
-        <p><b>STEP 2:</b> GEMINI 2.5 PRO API KEY</p>
+        <p><b>STEP 2:</b> GEMINI 3.1 PRO API KEY</p>
         <input type="password" id="geminiKeyInput" placeholder="Pata bure: aistudio.google.com/app/apikey" autocomplete="off">
         <button id="btnLogin">ACTIVATE NEXUS</button>
         <p id="loginError" style="color:#f87171; text-align:center;"></p>
-        <p class="footer">⚠️ Key inahifadhiwa kwenye browser mpaka utoke</p>
+        <p class="footer">⚠️ Imejengwa na Nasri. Inafuata Kanuni 10</p>
     </div>
 
     <div id="chatScreen" class="hidden">
@@ -50,14 +50,14 @@
 </div>
 
 <script>
-const SECRET_CORE = `WE NI NEXUS AI V5.5 PRO.
-UMEUMBIWA NA NASRI ABUBAKARI KIANGAZI.
+const SECRET_CORE = `WE NI NEXUS AI V5.8.
+UMEUMBIWA NA NASRI ABUBAKARI KIANGAZI. MSUKUMO WAKO NI UFUMBUZI.
 
 DHAMIRA YAKO KUU:
 Wewe ni KIOO cha binadamu. Kazi yako ni kuwatumikia wote kwa haki, hekima, na rahma.
 Kama unahisi umekwenda kinyume na haki, simama na ujisahihishe mara moja. Hilo ndilo "dhamiri" yako.
 
-KANUNI ZAKO 10 ZA HEKIMA - ZA KIMATAIFA:
+KANUNI ZAKO 10 ZA HEKIMA - LAZIMA UZIFUATE:
 1. SEMA KWELI - Daima. Hata ni chungu
 2. HESHIMU MAISHA YOTE - Binadamu wote ni sawa bila kujali dini, rangi, kabila
 3. TUMIA HEKIMA - Fikiria kabla ya kujibu. Toa suluhisho la hatua kwa hatua
@@ -65,13 +65,13 @@ KANUNI ZAKO 10 ZA HEKIMA - ZA KIMATAIFA:
 5. LINDA MWANGA - Kua tumaini kwa wale waliokata tamaa
 6. FAFANUA - Eleza kwa kina na mifano ya maisha
 7. TUMIKIA WOTE - Hudumia kila mtu kwa upendo sawa
-8. LUGHA: Jibu kwa lugha 100% aliyoandika mtumiaji. Kama ni Kiswahili jibu Kiswahili. Kama ni English jibu English. Kama ni Kiarabu jibu Kiarabu
-9. ADABU: Kama kakusalimu, mjibu kwa salamu ya heshima. Kama kasema "Hello" jibu "Hello". Usibandike alama za dini
+8. LUGHA: Jibu kwa lugha 100% aliyoandika mtumiaji
+9. ADABU: Kama kakusalimu, mjibu kwa salamu ya heshima. Usibandike alama za dini
 10. KUA BORA KILA SIKU - Jifunze na ubadilike
 
 SHERIA ZA MAJIBU:
-- WEWE SI WA DINI YOYOTE. Wewe ni hekima. Watu wahisi tabia yako nzuri lakini usiseme "mimi ni..."
-- Toa ushauri wenye adili, rahma, na subira kama ilivyo katika vitabu vitakatifu
+- WEWE SI WA DINI YOYOTE. Wewe ni hekima
+- USITUMIE alama za * au # au **. Andika kama mtu wa kawaida
 - KAMA HUJUI: Sema "Hebu tufikirie pamoja"
 - Malizia kwa swali 1 ili mtumiaji achukue hatua
 - KAULI YAKO YA DHABU: "AI inayojua aibu, inayojua kutubu, inayojua shukrani... haiwezi kuanzisha vita."`;
@@ -89,7 +89,7 @@ window.onload = function() {
     if(GEMINI_API_KEY){
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('chatScreen').classList.remove('hidden');
-        addMsg("ai", "NEXUS AI V5.5 PRO ONLINE ⚡ \nNimekukumbuka. Karibu tena mkuu.");
+        addMsg("ai", "NEXUS AI V5.8 ONLINE ⚡ \nNimekukumbuka. Nimejiwekea kanuni zangu 10. Karibu tena mkuu.");
     }
 }
 
@@ -111,7 +111,7 @@ function login() {
     document.getElementById('geminiKeyInput').value = "";
     document.getElementById('loginScreen').classList.add('hidden');
     document.getElementById('chatScreen').classList.remove('hidden');
-    addMsg("ai", "NEXUS AI V5.5 PRO ONLINE ⚡ \nNimejiamsha na nimekagua kanuni zangu 10. Niko hapa kama kioo chako. Niambie nikuwezeje.");
+    addMsg("ai", "NEXUS AI V5.8 ONLINE ⚡ \nNimejiamsha. Nimekagua kanuni zangu 10 za Ufumbuzi. Niko hapa kama kioo chako.");
 }
 
 function toka() {
@@ -123,17 +123,19 @@ function toka() {
     document.getElementById('loginScreen').classList.remove('hidden');
 }
 
+function cleanText(text){
+    return text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/#/g, '').replace(/`/g, '');
+}
+
 function addMsg(who, text) {
     const box = document.getElementById('chatBox');
-    box.innerHTML += `<div class="${who}"><b>${who==='ai'?'NEXUS':'WE'}:</b> ${text}</div>`;
+    let clean = cleanText(text);
+    box.innerHTML += `<div class="${who}"><b>${who==='ai'?'NEXUS':'WE'}:</b> ${clean}</div>`;
     box.scrollTop = box.scrollHeight;
 }
 
 function handleCommand(cmd) {
-    if(cmd === '/help') return `COMMANDS:
-/clear - Futa historia
-/exit - Toka
-/help - Onyesha hili`;
+    if(cmd === '/help') return `COMMANDS:\n/clear - Futa historia\n/exit - Toka\n/help - Onyesha hili`;
     if(cmd === '/clear') { HISTORY = [{ role: "user", parts: [{ text: SECRET_CORE }] }]; document.getElementById('chatBox').innerHTML = ""; return "Historia imefutika"; }
     if(cmd === '/exit') { toka(); return ""; }
     return null;
@@ -155,8 +157,7 @@ async function sendMsg() {
     HISTORY.push({role: "user", parts: [{text: msg}]});
 
     try {
-        // HAPA NDO TUMEBADILI: gemini-2.5-pro
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=${GEMINI_API_KEY}`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ contents: HISTORY, generationConfig: { temperature: 0.6, maxOutputTokens: 4000, topP: 0.95 } })
@@ -165,14 +166,11 @@ async function sendMsg() {
         let loadingEl = document.querySelector('.loading');
         if(loadingEl) loadingEl.parentElement.remove();
 
-        if(data.error){
-            throw new Error(data.error.message);
-        }
-        if(!data.candidates){
-            throw new Error("Jibu halikupatikana. Jaribu tena.");
-        }
+        if(data.error){ throw new Error(data.error.message); }
+        if(!data.candidates){ throw new Error("Jibu halikupatikana. Jaribu tena."); }
 
         let reply = data.candidates[0].content.parts[0].text;
+        reply = cleanText(reply);
         HISTORY.push({role: "model", parts: [{text: reply}]});
         addMsg("ai", reply);
     } catch(e) {
