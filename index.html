@@ -107,7 +107,7 @@ function toka() {
     localStorage.removeItem('nexus_key');
     HISTORY = [{ role: "user", parts: [{ text: SECRET_CORE }] }];
     document.getElementById('chatBox').innerHTML = "";
-    document.getElementById('chatScreen').classList.add('hidden');
+    document.getElementById('chatScreen').add('hidden');
     document.getElementById('loginScreen').classList.remove('hidden');
 }
 
@@ -134,7 +134,7 @@ async function sendMsg() {
     const msg = input.value.trim();
     if(!msg ||!GEMINI_API_KEY || IS_THINKING) return;
 
-    const cmdResult = handleCommand(msg);
+    const cmdResult = handleCommand(cmd);
     if(cmdResult!== null) { if(cmdResult) addMsg("command", cmdResult); input.value = ""; return; }
 
     IS_THINKING = true;
@@ -145,7 +145,7 @@ async function sendMsg() {
     HISTORY.push({role: "user", parts: [{text: msg}]});
 
     try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ contents: HISTORY, generationConfig: { temperature: 0.6, maxOutputTokens: 4000, topP: 0.95 } })
